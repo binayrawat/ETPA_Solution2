@@ -1,0 +1,24 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: private-ingress
+  namespace: default
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/subnets: subnet-06b5e3fac83887d5f,subnet-02c2e1a650796a79d
+spec:
+  ingressClassName: alb
+  rules:
+  - http:
+      paths:
+      - path: /post
+        pathType: Exact
+        backend:
+          service:
+            name: httpbin-service
+            port:
+              number: 80
+---
